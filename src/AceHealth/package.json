@@ -1,0 +1,26 @@
+{
+  "name": "acehealth",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "build": {
+    "appId": "manojtgn.me",
+    "productName": "AceHealth",
+    "directories": {
+      "output": "dist"
+    }
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^28.2.0"
+  },
+  "dependencies": {
+    "electron-log": "^5.1.0"
+  }
+}

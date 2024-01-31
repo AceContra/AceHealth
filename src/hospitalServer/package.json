@@ -1,0 +1,20 @@
+{
+  "name": "hospitalserver",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "development": "node --watch server --env-file .env",
+    "start": "node server --env-file .env",
+    "test": ""
+  },
+  "keywords": [],
+  "author": "ManojTGN",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.0.3"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
