@@ -1,5 +1,5 @@
 # Ace Health
-@todo: Add About Section
+ AceHealth consolidates comprehensive medical records, including medication history and real-time vital signs data like respiration and pulses. Patients can securely share this information with hospitals and doctors, facilitating tailored treatment plans for optimal healthcare outcomes.
 
 ### Structure (src)
 ```
