@@ -18,8 +18,6 @@ export default function Dashboard(){
     },[]);
 
     return (
-        <div className='w-full bg-white'>
-            Dashboard
-        </div>
+        <div className='w-full bg-white'></div>
     );
 }

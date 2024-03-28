@@ -14,10 +14,12 @@ const router = createBrowserRouter([
     { path: "/dashboard", element: <App selectedPage={"DASHBOARD"} /> },
     { path: "/patients", element: <App selectedPage={"PATIENTS"} /> },
     { path: "/doctors", element: <App selectedPage={"DOCTORS"} /> },
-    { path: "/iots", element: <App selectedPage={"IOTS"} /> },
+    { path: "/devices", element: <App selectedPage={"DEVICES"} /> },
 
     { path: "/settings", element: <App selectedPage={"SETTINGS"} /> },
-    { path: "/exit", element:  <App selectedPage={"EXIT"} />  }
+    { path: "/exit", element:  <App selectedPage={"EXIT"} />  },
+
+    {path: "/patient/:id", element:<App selectedPage={"PATIENT"} />}
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

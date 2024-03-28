@@ -9,9 +9,9 @@ export default function InfoCard({name, icon, count, bgcolor, textColor, imgTran
                 </div>
                 <p>{name}</p>
                 <div className="w-full flex items-center justify-end">
-                    <span class="relative flex h-5 w-5 items-center justify-center">
-                        <span class="animate-ping duration-1000 absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2 w-2 bg-red-400"></span>
+                    <span className="relative flex h-5 w-5 items-center justify-center">
+                        <span className="animate-ping duration-1000 absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-red-400"></span>
                     </span>
                     <p className="text-sm text-red-500 font-bold font-mono">Live</p>
                 </div>
