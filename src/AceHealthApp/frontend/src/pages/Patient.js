@@ -45,7 +45,7 @@ export default function Patient(){
             }
 
             if(result.device){
-                console.log("WORKING")
+            
             }
 
             setTimeout(()=>setPatient(result),1000);
@@ -70,25 +70,25 @@ export default function Patient(){
                         <div className='flex flex-col gap-2'>
                             <div className='flex w-full gap-2'>
                                 <p className='w-full text-neutral-500 font-bold'><i className="fa-solid fa-arrows-up-to-line"></i> Height</p>
-                                <p className='w-full'>{patient?"todo":""}</p>
+                                <p className='w-full font-bold'>{patient?"todo":""}</p>
                             </div>
                             <div className='flex w-full gap-2'>
                                 <p className='w-full text-neutral-500 font-bold'><i className="fa-solid fa-weight-scale"></i> Weight</p>
-                                <p className='w-full'>{patient?"todo":""}</p>
+                                <p className='w-full font-bold'>{patient?"todo":""}</p>
                             </div>
                             <div className='flex w-full gap-2'>
                                 <p className='w-full text-neutral-500 font-bold'><i className="fa-solid fa-house"></i> Address</p>
-                                <p className='w-3/4 truncate'>{patient?patient.address:""}</p>
+                                <p className='w-3/4 truncate font-bold'>{patient?patient.address:""}</p>
                             </div>
                             <div className='flex w-full gap-2'>
                                 <p className='w-full text-neutral-500 font-bold'><i className="fa-solid fa-phone"></i> Phone</p>
-                                <p className='w-full'>{patient?patient.phone:""}</p>
+                                <p className='w-full font-bold'>{patient?patient.phone:""}</p>
                             </div>
                         </div>
                     </div>
                 
-                    <div className='w-4/6 bg-white border-2 border-neutral-200 rounded-md p-3 flex flex-col'>
-                        <div className='h-full rounded-md'>
+                    <div className='w-4/6 bg-white border-2 border-neutral-200 rounded-md p-3 flex gap-2'>
+                        <div className='w-full h-full rounded-md'>
                         <Chart
                             options={{
                                 data,
@@ -97,12 +97,12 @@ export default function Patient(){
                             }}
                         />
                         </div>
-                        <div className='h-0 opacity-0 overflow-hidden transition-all '>
-                            
+                        <div className='w-1/6 h-full opacity-0 overflow-hidden transition-all '>
+                            HelloWorld
                         </div>
                     </div>
                 </div>
-                <div className='w-full h-full bg-white border-2 border-neutral-200 rounded-md p-3'>
+                <div className='w-full h-full bg-white border-2 border-neutral-200 rounded-md p-3 flex gap-2'>
                     {/* <button className='p-2 bg-neutral-300 rounded-md font-bold border-2 border-black' onClick={randomizeData}> <i className="fa-solid fa-dice-five"></i> Randomize </button> */}
                     <div className='w-1/2 h-full p-2 border-neutral-100 border-2 rounded-md flex flex-col gap-1 overflow-hidden '>
                         <div className='w-full flex gap-5 border-b-2 '>
@@ -125,6 +125,53 @@ export default function Patient(){
                             </div>
                             <div className={`h-full transition-all overflow-hidden text-red-600 font-bold flex items-center gap-5 `+(selectedMenu==="FAMILY_HISTORY"?`w-full`:`w-0 opacity-0`)}>
                             <p className='mx-56'><i className="fa-regular fa-circle-xmark fa-lg "></i>  Family History Not Found</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className='w-1/2 h-full rounded flex flex-col gap-1'>
+                        <div className='h-full border-neutral-100 rounded border-2 flex gap-2'>
+                            <div className='w-full bg-red-200 rounded-md p-3 flex flex-col'>
+                                <div className='flex gap-2 items-center'>
+                                    <i class="p-2 py-4 bg-white rounded fa-solid fa-droplet fa-lg text-red-600"></i>
+                                    <p className='font-bold text-sm text-neutral-600'>Blood Pressure</p>
+                                </div>
+                                <p className='font-bold text-3xl h-full flex items-center'>100 mg/ld</p>
+                                <p className='font-bold text-sm text-red-500'><i className="fa-solid fa-caret-down"></i> Higher than Avg</p>
+                            </div>
+                            <div className='w-full bg-green-200 rounded-md p-3 flex flex-col'>
+                                <div className='flex gap-2 items-center'>
+                                    <i class="p-2 py-4 bg-white rounded fa-solid fa-heart-pulse fa-lg text-green-600"></i>
+                                    <p className='font-bold text-sm text-neutral-600'>Heart Rate</p>
+                                </div>
+                                <p className='font-bold text-3xl h-full flex items-center'>78 bmp</p>
+                                <p className='font-bold text-sm text-red-500'><i className="fa-solid fa-caret-down"></i> Lower than Avg</p>
+                            </div>
+                            <div className='w-full bg-blue-200 rounded-md p-3 flex flex-col'>
+                                <div className='flex gap-2 items-center'>
+                                    <i class="p-2 py-4 bg-white rounded fa-solid fa-briefcase-medical fa-lg text-blue-600"></i>
+                                    <p className='font-bold text-sm text-neutral-600'>Glucose Level</p>
+                                </div>
+                                <p className='font-bold text-3xl h-full flex items-center'>78-92</p>
+                                <p className='font-bold text-sm text-red-500'><i className="fa-solid fa-caret-up"></i> Higher than Avg</p>
+                            </div>
+                            <div className='w-full bg-yellow-200 rounded-md p-3 flex flex-col'>
+                                <div className='flex gap-2 items-center'>
+                                    <i class="p-2 py-4 bg-white rounded fa-solid fa-weight-hanging fa-lg text-yellow-600"></i>
+                                    <p className='font-bold text-sm text-neutral-600'>BMP Result</p>
+                                </div>
+                                <p className='font-bold text-3xl h-full flex items-center'>27.7kg/m2</p>
+                                <p className='font-bold text-sm text-red-500'><i className="fa-solid fa-caret-up"></i> Overweight</p>
+                            </div>
+                        </div>
+                        <div className='h-full rounded border-neutral-300 border-2 p-2'>
+                            <p className='font-bold text-xl'>Patient Status</p>
+                            <div className='flex items-center gap-5'>
+                                <p className='text-neutral-500 font-bold my-4 px-2'>Last Check</p>
+                                <p className='font-bold text-black'>Dr Mohana Priya on 6th March</p>
+                            </div>
+                            <p className='text-neutral-500 font-bold my-4 px-2'>Report</p>
+                            <div className='p-5 bg-blue-100 rounded-md font-bold'>
+                                Patient admitted with symptoms of severe dehydration and electrolyte imbalance. Initial tests indicate low potassium levels and elevated creatinine. Treatment plan initiated with IV fluids and electrolyte replacement therapy
                             </div>
                         </div>
                     </div>

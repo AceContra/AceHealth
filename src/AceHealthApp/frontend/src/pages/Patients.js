@@ -1,6 +1,6 @@
+import ConfettiExplosion from 'react-confetti-explosion';
 import { useEffect, useState } from "react";
 import axios from 'axios';
-import ConfettiExplosion from 'react-confetti-explosion';
 
 import InfoCard from "../components/InfoCard";
 import InputBox from "../components/InputBox";

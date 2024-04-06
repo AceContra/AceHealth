@@ -2,7 +2,7 @@ export default function PatientBar({index, loading, search, ...element}){
 
     if(loading)
         return(
-        <div key={index} className={`w-full h-[48px] flex items-center gap-2 p-2 border-2 border-neutral-300 rounded-md transition-all animate-pulse `+(index===0?`opacity-100`:index===1?`opacity-70`:index===2?`opacity-50`:index===3?`opacity-30`:index===4?`opacity-10`:`opacity-5`)}>
+        <div key={index} className={`w-full h-[48px] flex items-center gap-2 p-2 py-5 border-2 border-neutral-300 rounded-md transition-all animate-pulse `+(index===0?`opacity-100`:index===1?`opacity-70`:index===2?`opacity-50`:index===3?`opacity-30`:index===4?`opacity-10`:`opacity-5`)}>
             <div className="flex items-center w-[80px] gap-2">
                 <div className="bg-slate-400 rounded-full w-[40px] h-[40px]"></div>
             </div>
