@@ -2,8 +2,9 @@ const express = require('express');
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const cors = require('cors');
-require('./utils/database');
+const { Server } = require("socket.io");
 
+require('./utils/database');
 const clr = require('./utils/color');
 const logger = require('./utils/logger');
 
@@ -58,7 +59,13 @@ App.get('/getDevices',async (req,res)=>{
 
 App.get('/getPatient/:id',async (req,res)=>{
     let patient = await patientSchema.findById(req.params.id);
-    res.send({patient});
+    let result = patient.toJSON();
+
+    if(patient.deviceid != ''){
+        result["device"] = await deviceSchema.findOne({"id":patient.deviceid});
+    }
+
+    res.send({patient:result});
     logger.log(`/getPatient ${clr.Yellow}${req.params.id}`,logger.msgType.SUCC);
 
 })
@@ -67,6 +74,37 @@ App.get('/getPatients',async (req,res)=>{
     let patients = await patientSchema.find();
     res.send({patients});
     logger.log(`/getPatients`,logger.msgType.SUCC);
+});
+
+simulations = {};
+App.get('/startsimulation/:id',async (req,res)=>{
+    let deviceID = req.params.id;
+    if(deviceID in simulations){
+        res.sendStatus(500);
+        logger.log(`/simulate ${clr.Green}START ${clr.Yellow}${deviceID} ${clr.Reset}Failed`,logger.msgType.ERR);
+        return;
+    }
+
+    simulations[deviceID] = true;
+    await deviceSchema.findOneAndUpdate({id:deviceID},{isActive:true});
+
+    res.sendStatus(200);
+    logger.log(`/simulate ${clr.Green}START ${clr.Yellow}${deviceID}`,logger.msgType.SUCC);
+});
+
+App.get('/stopsimulation/:id',async (req,res)=>{
+    let deviceID = req.params.id;
+    if(!(deviceID in simulations)) {
+        res.sendStatus(500);
+        logger.log(`/simulate ${clr.Red}STOP ${clr.Yellow}${deviceID} ${clr.Reset}Failed`,logger.msgType.ERR);
+        return;
+    }
+    
+    delete simulations[deviceID];
+    await deviceSchema.findOneAndUpdate({id:deviceID},{isActive:false});
+
+    res.sendStatus(200);
+    logger.log(`/simulate ${clr.Red}STOP ${clr.Yellow}${deviceID}`,logger.msgType.SUCC);
 });
 
 App.post('/',async (req,res)=>{
@@ -87,8 +125,12 @@ App.post('/',async (req,res)=>{
 
         await patient.save();
 
-        let device = await deviceSchema.findOneAndUpdate({id:patient.deviceid},{assignedTo:patient._id});
-        await device.save();
+        try{
+            let device = await deviceSchema.findOneAndUpdate({id:patient.deviceid},{assignedTo:patient._id});
+            await device.save();
+        }catch(exception){
+            //no device found;
+        }
 
         res.sendStatus(200);
         logger.log(`/CreatePatient ${clr.Yellow}Success`,logger.msgType.SUCC);
@@ -103,6 +145,15 @@ App.post('/',async (req,res)=>{
 
 });
 
+
+const io = new Server(4000, { 
+    cors: {
+        origin: "http://localhost:3000"
+    }
+});
+io.on("connection", (socket) => {
+  console.log(socket)
+});
 
 App.get('/',(req, res)=>{ res.sendStatus(200); });
 App.post('/',(req, res)=>{ res.sendStatus(200); });

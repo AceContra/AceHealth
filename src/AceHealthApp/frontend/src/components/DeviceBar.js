@@ -47,8 +47,8 @@ export default function DeviceBar({index, loading, ...element}){
             </div>
             <div className="flex items-center w-1/6 gap-1">
                 <p className="text-neutral-500">Status:</p>
-                {element.isActive?<i className="fa-regular fa-circle-dot"></i>:<i className="fa-solid fa-circle-dot text-neutral-600"></i>}
-                {element.isActive?"Active":"Inactive"}
+                {element.isActive?<i className="fa-regular fa-circle-dot animate-pulse text-emerald-800"></i>:<i className="fa-solid fa-circle-dot text-neutral-600 fa-sm"></i>}
+                {element.isActive?<p className="font-bold text-emerald-700 animate-pulse">Active</p>:"Inactive"}
             </div>
             <div className="flex items-center justify-end w-2/6 gap-1 group-hover:visible invisible">
                 <i className="fa-regular fa-eye p-2 bg-blue-400 text-white rounded-md cursor-pointer"></i>

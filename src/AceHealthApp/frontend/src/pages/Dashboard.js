@@ -18,6 +18,8 @@ export default function Dashboard(){
     },[]);
 
     return (
-        <div className='w-full bg-white'></div>
+        <div className='w-full flex justify-center bg-[#d4def3] overflow-hidden'>
+            <img className="object-fill" src="images/dashboard.jpg" alt="" draggable="false"/>
+        </div>
     );
 }

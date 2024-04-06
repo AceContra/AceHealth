@@ -5,7 +5,7 @@ export default function SidebarButton({selected, href, name, icon, image, draft}
         <a href={href} className={("flex items-center p-4 rounded-md gap-7 w-full cursor-pointer active:scale-95 transition-all")+(selected?" bg-blue-100":" hover:scale-105")}>
             
             {image?
-            <img src={image} alt="" className="w-[30px] rounded-full"/>
+            <img src={image} alt="" className="w-[30px] rounded-full" draggable={false}/>
             :<i className={icon+(selected?" text-blue-600":"")}></i>}
 
             <p className={("font-bold text-lg")+(selected?" text-blue-600":"")}>{name}</p>

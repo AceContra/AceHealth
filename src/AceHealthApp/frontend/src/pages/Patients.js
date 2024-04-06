@@ -26,6 +26,8 @@ export default function Patients({createPatientModal, setCreatePatientModal}){
     const [patientAddress, setPatientAddress] = useState("");
     const [patientPhoneNumber, setPatientPhoneNumber] = useState("");
 
+    const [selectedPage,setSelectedPage] = useState(1);
+
     function loadPatients(){
         setPatients(null);
         setLoading(true);
@@ -49,7 +51,7 @@ export default function Patients({createPatientModal, setCreatePatientModal}){
         });
     }
 
-    useEffect(()=>{ loadPatients() },[patientCreation]);
+    useEffect(()=>{ loadPatients() },[patientCreation,selectedPage]);
 
     let createModal = <div className={"w-[calc(100%-400px+70px)] absolute top-0 left-[400px] -translate-x-[70px] transition-all flex items-center justify-center overflow-hidden "+(createPatientModal?"h-full z-10":"h-0")}>
         <div className='bg-black/30 w-full h-full absolute top-0 left-0 z-10 peer'></div>
@@ -129,7 +131,7 @@ export default function Patients({createPatientModal, setCreatePatientModal}){
             <div className="absolute flex items-center mx-[500px] justify-start">
                 <ConfettiExplosion force={0.8} duration={3000} particleCount={250} width={1600} />
             </div>
-            <div className="absolute p-2 flex flex-col gap-2 h-3/6 w-2/6 mx-[400px] my-[200px] items-center justify-center bg-white border-4 border-emerald-500 rounded-md z-10">
+            <div className="absolute p-2 flex flex-col gap-2 h-3/6 w-2/6 mx-[400px] my-[200px] items-center justify-center bg-white border-4 border-emerald-500 rounded-md z-10 shadow-md">
                 <div className="h-full flex items-center justify-center text-7xl">
                 <i className="fa-solid fa-circle-check text-emerald-600 fa-beat fa-2xl"></i>
                 </div>
@@ -157,10 +159,10 @@ export default function Patients({createPatientModal, setCreatePatientModal}){
                     </div>
                 </div>
                 <div className="w-full grid grid-rows-2 grid-flow-col gap-5">   
-                    <InfoCard name={"Patients"} count={"928"} icon={"fa-solid fa-user-group"} bgcolor={"bg-violet-200"} textColor={"text-violet-500"} imgTransform={"rotate-[240deg]"}/>
-                    <InfoCard name={"Operations"} count={"287"} icon={"fa-solid fa-scissors"} bgcolor={"bg-orange-200"} textColor={"text-orange-500"}/>
+                    <InfoCard name={"Patients"} count={"235"} icon={"fa-solid fa-user-group"} bgcolor={"bg-violet-200"} textColor={"text-violet-500"} imgTransform={"rotate-[240deg]"}/>
+                    <InfoCard name={"Operations"} count={"43"} icon={"fa-solid fa-scissors"} bgcolor={"bg-orange-200"} textColor={"text-orange-500"}/>
                     <InfoCard name={"Tracking"} count={"342"} icon={"fa-solid fa-arrow-trend-up"} bgcolor={"bg-emerald-200"} textColor={"text-emerald-500"} imgTransform={"rotate-[120deg]"}/>
-                    <InfoCard name={"Appointments"} count={"342"} icon={"fa-solid fa-calendar"} bgcolor={"bg-pink-200"} textColor={"text-pink-500"} imgTransform={"rotate-[200deg]"}/>
+                    <InfoCard name={"Appointments"} count={"156"} icon={"fa-solid fa-calendar"} bgcolor={"bg-pink-200"} textColor={"text-pink-500"} imgTransform={"rotate-[200deg]"}/>
                 </div>
             </div>
             <hr/>
@@ -199,7 +201,7 @@ export default function Patients({createPatientModal, setCreatePatientModal}){
                         <PatientBar key={4} index={4} loading={true} />
                 </div>
 
-                <div className={`w-full flex flex-col gap-4 transition-all duration-500 `+(loading?`h-0 opacity-0 overflow-hidden`:`h-auto opacity-100`)}>
+                <div className={`w-full flex flex-col gap-4 transition-all duration-500 `+(loading?`h-0 opacity-0 overflow-hidden`:`h-full opacity-100 overflow-y-auto`)}>
                 {patients?
                 patients.map((element,index)=>{
                     if(
@@ -217,7 +219,15 @@ export default function Patients({createPatientModal, setCreatePatientModal}){
                 })
                 :null}
                 </div>
-
+                <div className={`flex gap-1 transition-all duration-700 `+(loading||search?`opacity-0`:`opacity-1`)}>
+                    <p onClick={()=>setSelectedPage(1)} className={`px-3 p-1 rounded `+(selectedPage===1?`bg-blue-600 text-white`:`text-blue-600 underline cursor-pointer`)}>1</p>
+                    <p onClick={()=>setSelectedPage(2)} className={`px-3 p-1 rounded `+(selectedPage===2?`bg-blue-600 text-white`:`text-blue-600 underline cursor-pointer`)}>2</p>
+                    <p onClick={()=>setSelectedPage(3)} className={`px-3 p-1 rounded `+(selectedPage===3?`bg-blue-600 text-white`:`text-blue-600 underline cursor-pointer`)}>3</p>
+                    <p onClick={()=>setSelectedPage(4)} className={`px-3 p-1 rounded `+(selectedPage===4?`bg-blue-600 text-white`:`text-blue-600 underline cursor-pointer`)}>4</p>
+                    <p className={`font-bold`}> ... </p>
+                    <p onClick={()=>setSelectedPage(25)} className={`px-3 p-1 rounded `+(selectedPage===25?`bg-blue-600 text-white`:`text-blue-600 underline cursor-pointer`)}>25</p>
+                    <p onClick={()=>setSelectedPage(26)} className={`px-3 p-1 rounded `+(selectedPage===26?`bg-blue-600 text-white`:`text-blue-600 underline cursor-pointer`)}>26</p>
+                </div>
                 {/* {search.trim() !== ""?<p className="w-full font-bold text-center py-12">{searchResult} Result For Your Search</p>:null} */}
             </div>
         </div>

@@ -18,7 +18,7 @@ function log(message, messageType=msgType.NONE){
              messageType==msgType.WARN? color.BgYellow :
              messageType==msgType.SUCC? color.BgGreen  :
              msgType.NONE) +
-            messageType
+            messageType +(messageType===msgType.ERR?' ':'')
         ) + color.Reset,
 
         message,
