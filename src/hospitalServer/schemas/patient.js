@@ -12,7 +12,11 @@ const patientSchema = new mongoose.Schema({
     category:{required:true,type:String},
     address:{required:true,type:String},
     phone:{required:true,type:String},
-
+    height:{required:true,type:Number},
+    bloodPressure:{required:true,type:Number},
+    heartRate:{required:true,type:Number},
+    glucoseRate:{required:true,type:Array},
+    bmpResult:{required:true,type:Number}
 });
 
 module.exports = mongoose.model('Patient',patientSchema);

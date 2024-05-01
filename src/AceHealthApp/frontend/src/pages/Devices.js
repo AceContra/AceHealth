@@ -35,7 +35,7 @@ export default function Devices(){
 
     return (
         <div className='w-full bg-white'>
-            <div className="h-2/6">
+            <div className="h-0 overflow-hidden transition-all ">
             <div className="h-full flex items-center justify-center bg-neutral-300">
                 <pre className="bg-neutral-400 p-2 px-4 rounded-md font-bold text-center text-red-700"><i className="fa-solid fa-clipboard-list"></i> @TODO: Add Live & Graph</pre>
             </div>

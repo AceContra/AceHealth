@@ -121,6 +121,12 @@ App.post('/',async (req,res)=>{
             category:req.body.category,
             address:req.body.address,
             phone:req.body.phone,
+            
+            height:Math.floor(Math.random() * 74) + 50,
+            bloodPressure:Math.floor(Math.random() * 140) + 90,
+            heartRate:Math.floor(Math.random() * 100) + 60,
+            glucoseRate:[Math.floor(Math.random() * 90) + 70, Math.floor(Math.random() * 100) + 91],
+            bmpResult:Math.floor(Math.random() * 120) + 60
         });
 
         await patient.save();

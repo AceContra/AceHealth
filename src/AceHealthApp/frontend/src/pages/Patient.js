@@ -11,10 +11,10 @@ export default function Patient(){
     const [patient, setPatient] = useState(null);
     const [selectedMenu, setSelectedMenu] = useState("VISIT_HISTORY");
 
-    const { data, randomizeData } = useDemoConfig({
-        series: 10,
+    const _data = useDemoConfig({
+        series: 4,
         dataType: "time",
-    });
+    })['data'];
 
     const primaryAxis = React.useMemo(
         () => ({
@@ -31,7 +31,67 @@ export default function Patient(){
         []
     );
 
+    const [data, setData] = useState(
+        // useDemoConfig({
+        //     series: 10,
+        //     dataType: "time",
+        // })['data']
+        [
+            {
+                data:[
+                    {
+                        primary:new Date(),
+                        secondary:80,
+                        radius:undefined,
+                    }
+                ],
+                label:'Series 1',
+            },
+            {
+                data:[
+                    {
+                        primary:new Date(),
+                        secondary:90,
+                        radius:undefined,
+                    }
+                ],
+                label:'Series 2',
+            }
+        ]
+    );
+
+    const [rerender, setRerender] = useState( data[0].data.length%2 === 0 );
+    
     useEffect(()=>{
+        if(rerender) return;
+        setRerender(true);
+    },[rerender])
+
+    useEffect(()=>{
+        const interval = setInterval(() => {
+            setData(
+                (prevData) => {
+                    prevData[0].data.push(
+                        {
+                            primary:new Date(),
+                            secondary:Math.floor(Math.random() * 90) + 140,
+                            radius:undefined
+                        }
+                    )
+                    prevData[1].data.push(
+                        {
+                            primary:new Date(),
+                            secondary:Math.floor(Math.random() * 100) + 60,
+                            radius:undefined
+                        }
+                    )
+                    return prevData;
+                }
+            );
+            setRerender(false);
+            // setRerender(true);
+        }, 1000);
+
         axios({
             method: 'GET',
             url:`http://localhost:${process.env.REACT_APP_API_HOSPITAL_PORT}/getPatient/${id}`,
@@ -44,17 +104,19 @@ export default function Patient(){
                 result.picture = "../"+result.picture;
             }
 
-            if(result.device){
-            
-            }
-
-            setTimeout(()=>setPatient(result),1000);
+            console.log(result);
+            setTimeout(()=>setPatient(result),500);
         })
         .catch((reason)=>{ 
             console.log(reason);
             setPatient(null);
         });
+
+        return () =>{
+            clearInterval(interval);
+        };
     },[]);
+
     return (
         <div className='w-full'>    
             <div className={`w-full bg-blue-50 flex items-center justify-center transition-all duration-500 `+(patient?`h-0 opacity-0`:`h-screen opacity-100`)}>
@@ -70,11 +132,11 @@ export default function Patient(){
                         <div className='flex flex-col gap-2'>
                             <div className='flex w-full gap-2'>
                                 <p className='w-full text-neutral-500 font-bold'><i className="fa-solid fa-arrows-up-to-line"></i> Height</p>
-                                <p className='w-full font-bold'>{patient?"todo":""}</p>
+                                <p className='w-full font-bold'>{patient?patient.height:""}</p>
                             </div>
                             <div className='flex w-full gap-2'>
                                 <p className='w-full text-neutral-500 font-bold'><i className="fa-solid fa-weight-scale"></i> Weight</p>
-                                <p className='w-full font-bold'>{patient?"todo":""}</p>
+                                <p className='w-full font-bold'>{patient?patient.bmpResult:""}</p>
                             </div>
                             <div className='flex w-full gap-2'>
                                 <p className='w-full text-neutral-500 font-bold'><i className="fa-solid fa-house"></i> Address</p>
@@ -89,16 +151,62 @@ export default function Patient(){
                 
                     <div className='w-4/6 bg-white border-2 border-neutral-200 rounded-md p-3 flex gap-2'>
                         <div className='w-full h-full rounded-md'>
-                        <Chart
+                        {patient?patient.device.isActive?
+                            rerender?
+                            <Chart
+                                options={{
+                                    data,
+                                    primaryAxis,
+                                    secondaryAxes,
+                                }}
+                            />
+                            :null
+                        :<Chart
                             options={{
-                                data,
+                                data:_data,
                                 primaryAxis,
                                 secondaryAxes,
                             }}
                         />
+                        :null}
                         </div>
-                        <div className='w-1/6 h-full opacity-0 overflow-hidden transition-all '>
-                            HelloWorld
+                        <div className='w-1/6 h-full transition-all '>
+                            {patient?patient.device.isActive?<>
+                            <div className='p-2 px-5 bg-red-200 rounded-md font-bold text-red-950'>
+                                <i className="fa-solid fa-heart-pulse fa-beat"></i> Live
+                            </div>
+                            <hr className='border border-dashed border-red-500 my-2'/>
+                            <div className='flex flex-col gap-2 my-3'>
+                                <div className='flex gap-2 items-center p-2 bg-red-100 rounded-md hover:cursor-pointer'>
+                                    <div className='bg-[#fcd19c] w-5 h-5 rounded'></div>
+                                    <p className='text-sm'>Heart Rate</p>
+                                </div>
+                                <div className='flex gap-2 items-center p-2 bg-red-100 rounded-md hover:cursor-pointer'>
+                                    <div className='bg-[#87c1d5] w-5 h-5 rounded'></div>
+                                    <p className='text-sm'>Glucose Rate</p>
+                                </div>
+                            </div>
+                            </>
+                            :
+                            <div className='flex flex-col gap-2'>
+                                <div className='flex gap-2 items-center p-2 bg-neutral-200 rounded-md hover:cursor-pointer'>
+                                    <div className='bg-[#a9e7e4] w-5 h-5 rounded'></div>
+                                    <p className='text-sm'>Blood Pressure</p>
+                                </div>
+                                <div className='flex gap-2 items-center p-2 bg-neutral-200 rounded-md hover:cursor-pointer'>
+                                    <div className='bg-[#feb3b3] w-5 h-5 rounded'></div>
+                                    <p className='text-sm'>Heart Rate</p>
+                                </div>
+                                <div className='flex gap-2 items-center p-2 bg-neutral-200 rounded-md hover:cursor-pointer'>
+                                    <div className='bg-[#fcd19c] w-5 h-5 rounded'></div>
+                                    <p className='text-sm'>Glucose Rate</p>
+                                </div>
+                                <div className='flex gap-2 items-center p-2 bg-neutral-200 rounded-md hover:cursor-pointer'>
+                                    <div className='bg-[#87c1d5] w-5 h-5 rounded'></div>
+                                    <p className='text-sm'>Pulse Rate(MP)</p>
+                                </div>
+                            </div>
+                            :null}
                         </div>
                     </div>
                 </div>
@@ -132,34 +240,34 @@ export default function Patient(){
                         <div className='h-full border-neutral-100 rounded border-2 flex gap-2'>
                             <div className='w-full bg-red-200 rounded-md p-3 flex flex-col'>
                                 <div className='flex gap-2 items-center'>
-                                    <i class="p-2 py-4 bg-white rounded fa-solid fa-droplet fa-lg text-red-600"></i>
+                                    <i className="p-2 py-4 bg-white rounded fa-solid fa-droplet fa-lg text-red-600"></i>
                                     <p className='font-bold text-sm text-neutral-600'>Blood Pressure</p>
                                 </div>
-                                <p className='font-bold text-3xl h-full flex items-center'>100 mg/ld</p>
+                                <p className='font-bold text-3xl h-full flex items-center'>{patient ? patient.bloodPressure:null} mg/ld</p>
                                 <p className='font-bold text-sm text-red-500'><i className="fa-solid fa-caret-down"></i> Higher than Avg</p>
                             </div>
                             <div className='w-full bg-green-200 rounded-md p-3 flex flex-col'>
                                 <div className='flex gap-2 items-center'>
-                                    <i class="p-2 py-4 bg-white rounded fa-solid fa-heart-pulse fa-lg text-green-600"></i>
+                                    <i className="p-2 py-4 bg-white rounded fa-solid fa-heart-pulse fa-lg text-green-600"></i>
                                     <p className='font-bold text-sm text-neutral-600'>Heart Rate</p>
                                 </div>
-                                <p className='font-bold text-3xl h-full flex items-center'>78 bmp</p>
+                                <p className='font-bold text-3xl h-full flex items-center'>{patient ? patient.heartRate:null} bmp</p>
                                 <p className='font-bold text-sm text-red-500'><i className="fa-solid fa-caret-down"></i> Lower than Avg</p>
                             </div>
                             <div className='w-full bg-blue-200 rounded-md p-3 flex flex-col'>
                                 <div className='flex gap-2 items-center'>
-                                    <i class="p-2 py-4 bg-white rounded fa-solid fa-briefcase-medical fa-lg text-blue-600"></i>
+                                    <i className="p-2 py-4 bg-white rounded fa-solid fa-briefcase-medical fa-lg text-blue-600"></i>
                                     <p className='font-bold text-sm text-neutral-600'>Glucose Level</p>
                                 </div>
-                                <p className='font-bold text-3xl h-full flex items-center'>78-92</p>
+                                <p className='font-bold text-3xl h-full flex items-center'>{patient ? patient.glucoseRate[0]:null}-{patient ? patient.glucoseRate[1]:null}</p>
                                 <p className='font-bold text-sm text-red-500'><i className="fa-solid fa-caret-up"></i> Higher than Avg</p>
                             </div>
                             <div className='w-full bg-yellow-200 rounded-md p-3 flex flex-col'>
                                 <div className='flex gap-2 items-center'>
-                                    <i class="p-2 py-4 bg-white rounded fa-solid fa-weight-hanging fa-lg text-yellow-600"></i>
+                                    <i className="p-2 py-4 bg-white rounded fa-solid fa-weight-hanging fa-lg text-yellow-600"></i>
                                     <p className='font-bold text-sm text-neutral-600'>BMP Result</p>
                                 </div>
-                                <p className='font-bold text-3xl h-full flex items-center'>27.7kg/m2</p>
+                                <p className='font-bold text-3xl h-full flex items-center'>{patient ? patient.bmpResult:null}kg/m2</p>
                                 <p className='font-bold text-sm text-red-500'><i className="fa-solid fa-caret-up"></i> Overweight</p>
                             </div>
                         </div>
